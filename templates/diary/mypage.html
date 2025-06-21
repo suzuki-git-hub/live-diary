@@ -1,0 +1,45 @@
+{% extends 'diary/base.html' %}
+{% load static %}
+
+{% block  css %}
+<link rel="stylesheet" href="{% static 'diary/css/mypage.css' %}">
+{% endblock %}
+  
+{% block js %}
+<script src="{% static 'diary/js/search.js' %}"></script>
+{% endblock %}
+
+
+{% block main %}
+<div class="flex-container">
+  <header>
+    <h1>Live Diary</h1>
+    <a href="{% url 'diary:create' %}" class="mypage-button1">参戦記録＋</a>
+    <a href="{% url 'diary:add_folder' %}" class="mypage-button2">フォルダ＋</a>
+    <a href="{% url 'account_logout' %}" class="mypage-button3"><i class="fa-solid fa-gear" style="color: #ffffff;"></i></a>
+  </header>
+
+  <main>
+    <form action="" method="get" class="search-form" >{# actionはフォームのデータが送信される先のURLの指定。フォームのデータがどのURLに送信されるかを定義する属性。何も指定しなければフォームのデータは現在のページのURLに送信される #}
+     
+      <input type="text" name="search" value="{{ request.GET.search }}" id="search" placeholder=" ファイル名で検索">
+      <i class="fas fa-search"></i>
+    </form>                     
+      
+    <div  class="folder-name" id="search_result"></div>
+  
+  </main>
+</div>
+  
+  
+  
+  <script>
+    // folderのnameのjavascriptのオブジェクトの配列を作る
+    const data = [
+      {% for folder in folders %}
+      { "title":"{{ folder.name }}","link":"{% url 'diary:folder' folder.id %}" },
+      {% endfor %}
+    ];
+  </script>
+
+{% endblock %}

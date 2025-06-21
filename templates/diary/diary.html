@@ -1,0 +1,63 @@
+{% extends 'diary/base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'diary/css/diary.css' %}">
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
+
+
+
+{% block main %}
+
+<header>
+  <div><a href="{{request.META.HTTP_REFERER}}"><i class="fa-solid fa-angle-left"></i></a></div>
+  <h1>Diary</h1>
+</header>
+<!-- requestオブジェクト内部にある“META.HTTP_REFERER”を使用。
+このMETA.HTTP_REFERERにはリファラページの情報を持つ。
+（リファラページとは直前まで閲覧していたページのURLのこと）
+このリファラページをrequest内に保存しているためrequest.META.HTTP_REFERERだけで直前のページに戻ることが可能。 -->
+
+<main>
+  <div class="parent">
+    <div class="child_1">
+      <p style="font-weight: bold">&emsp;Title&emsp;{{ diary.title }}</p>
+      <p><i class="fa-solid fa-calendar-days" style="color: black;"></i>{{ diary.dt }}</p>
+      <p><i class="fa-solid fa-location-dot" style="color: black;"></i>{{ diary.place }}</p>
+      <div>
+        <!-- modelメソッドを使って関連するアーティストを取得↓ -->
+        {% for artist in diary.get_artists %}
+        
+        <div class="artist_setlist">
+          <i class="fa-solid fa-user" style="color: black;"></i>
+          <input id="artist_chk{{ artist.id }}" class="artist_chk" type="checkbox">
+          <span>{{ artist.name }}</span>
+          <label for="artist_chk{{ artist.id }}" class="setlist_btn">セットリスト<i class="fa-solid fa-chevron-down" style="color: #000000;"></i></label>
+          <!-- idにDB上、idは主キーであり、重複が許されない固有の番号である{{ artist.id }}もしくは{{ setlist.id }}を含ませることでidの重複を防ぐ。 -->
+          
+          <div class="setlist_body">
+            {% for setlist in artist.get_setlists %}
+            <div>{{ forloop.counter }} {{ setlist.song }}</div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div> 
+    </div><!-- child_1 -->
+
+    <div class="child_2">{{ diary.content|safe }}</div>
+  </div>
+
+  <div class="edit_delete">
+    <a href="{% url 'diary:diary_edit' diary.id %}" class="edit">編 集</a>
+    <form action="{% url 'diary:diary_delete' diary.id %}" method="post" onclick="return confirm('本当にこの日記を消去しますか？');">
+      {% csrf_token %}
+      <input type="submit" class="delete" value="削除">
+    </form>
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,145 @@
+{% extends 'diary/base.html' %}
+{% load static %}
+
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'diary/css/create.css' %}">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+{# ↑FlatpickrのデフォルトのCSSファイルを読み込むためのコード #}
+{% endblock %}
+
+
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+{# ↑FlatpickrライブラリのメインのJavaScriptファイルを読み込むためのCDN。このファイルには、Flatpickrの基本的な機能と動作が含まれる。 #}
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+{# Flatpickrを日本語化するための言語ファイルを読み込むために使用されます。このファイルを読み込むことで、Flatpickrが日本語のカレンダー表示やラベルを提供する #}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock %}
+
+
+{% block main %}
+
+<header>
+  <div><a href="{% url 'diary:mypage' %}"><i class="fa-solid fa-angle-left"></i></a></div>
+  <h1>Diary writing</h1>
+</header>
+
+<main>
+  <form action="" method="POST">
+  {% csrf_token %}
+
+  {# {{ form.as_p }}←この書き方だと全てのフォームのフィールドが表示されるためフォームのカスタマイズができない #}
+  {# summernoteのエディタは表示されるように {{ form.content }}と書いて、それ以外は手動でカスタマイズする #}
+  <label class="form_item">
+    &emsp;Title
+    <input type="text" name="title" maxlength="50" class="not_decoration" required>
+  </label>
+
+  <label class="form_item">
+    <i class="fa-solid fa-calendar-days" style="color: #333333;"></i>
+    <input id="date" type="text" name="dt" placeholder="日付" class="not_decoration" readonly>
+    {# readonly属性が指定されると、フィールドが読み取り専用（編集不可）となる #}
+  </label>
+
+  <label class="form_item">
+    <i class="fa-solid fa-location-dot" style="color: #333333;">&thinsp;</i>
+    <input type="text" name="place" placeholder="場所" maxlength="20" class="not_decoration">
+  </label>
+
+  <!-- <div>
+    フォルダ選択
+    <select name="folder" id="multiSelectSample" multiple>
+      {% for folder in folders %}
+      <option value="{{ folder.id }}">{{ folder.name }}</option>
+      {% endfor %}
+    </select>
+  </div> -->
+  <input type="checkbox" id="folder_form_chk">
+  <label for="folder_form_chk" class="form_item folder_form_label"><span>フォルダ</span></label>
+
+  <div class="folder_form_area">
+    {% for folder in folders %}
+    <div class="folder_name_area">  
+      <label>
+        <input type="checkbox" name="folder" value="{{ folder.id }}">
+        <span>{{ folder.name }}</span>
+      </label>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div>
+    {# クラス名 .artist_area は使わない #}
+    <input type="button" id="add_artist" class="form_item" value="Artist追加">
+    <div class="artist_form_area">
+      <!-- jsを使って追加されてく部分 -->
+    </div>
+  </div>
+  
+  {{ form.content }}
+
+  <div>
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+
+  <input type="submit" value="完 成">
+
+{% comment %}
+  {% for diary in diaries %}
+  {# 文字のHTMLを発動させる #}
+  <div>{{ diary.content|safe }}</div>
+  {% endfor %}
+
+  safeフィルターはエスケープ無効化という機能。これがないと<p>や
+  <h1>などのhtmlタグがただの記号として認識される。
+    しかし、|safeを記述することにってエスケープ無効化となり、<p>や
+    <h1>がhtmlタグとして認識してくれる。
+      エスケープとは”<“や”>”の文字列を、他の文字列に変換すること。
+{% endcomment %}
+</main>
+
+
+<script src="{% static 'diary/js/dt.js' %}"></script>
+<script src="{% static 'diary/js/create.js' %}"></script>
+
+{% comment %}
+挙動がうまくいかなかった為CSSを使って実装する
+   <script>
+    $(function() {
+      // ドロップダウンをマルチセレクトにする
+      $("#multiSelectSample").multiselect({
+        noneSelectedText: "未選択",
+        checkAllText: "すべて選択", 
+        selectedText: "# 個選択",
+        selectedList: 3,
+      });
+    }); 
+  //   checkAllText (default:Check All)
+  //   文字列を入力するとドロップダウンヘッダーのCheck Allボタンに表示する文字を指定した文字列に変更する。
+
+  //  uncheckAllText (default:Uncheck All)
+  //  文字列を入力するとドロップダウンヘッダーのUncheck Allボタンに表示する文字を指定した文字列に変更する。
+
+  //  noneSelectedText (default:Select Option)
+  //  文字列を入力するとチェックボックス未選択時に表示されるSelect Optionを指定した文字列に変更する。
+
+  //  selectedText (defalut:# selected)
+  //  チェックボックスを選択しているとき#に選択個数を表示する。
+
+  // selectedList (default: false)
+  // 数値を入力するとドロップダウンリストの選んだものを、指定された数値を上限にドロップダウンのバーに表示する。
+  // 上限を超えたときはselectedTextに指定してるものが表示される。
+  </script>
+{% endcomment %}
+
+{% endblock %}

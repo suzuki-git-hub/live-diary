@@ -1,0 +1,55 @@
+{% extends 'diary/base.html' %}
+{# base.htmlを継承。{% block main %}から{% endblock %}の中に書かれた内容がオリジナル。 #}
+{% load static %}
+
+{% block  css %}
+<link rel="stylesheet" href="{% static 'diary/css/folder.css' %}">
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'diary/js/search.js' %}"></script>
+{% endblock %}
+
+{% block main %}
+<header>
+  <div><a href="{% url 'diary:mypage' %}"><i class="fa-solid fa-angle-left"></i></a></div>
+  <h1>{{folder.name}}</h1>
+  <form method="post" action="{% url 'diary:folder_delete' folder.id %}" class="delete_area">
+    {% csrf_token %}
+    <button type="submit" class="delete" onclick="return confirm('本当に削除しますか？フォルダに関連している日記も消えてしまいます。');">
+      <!-- confirm 関数は、ユーザーに対して「OK」または「キャンセル」の選択を求める標準的なダイアログを表示するためのものです。ユーザーが「OK」を選択した場合は true、ユーザーが「キャンセル」を選択した場合は false を返す。
+      confirm 関数を使用する際には、onclick 属性などを使用して、対象の要素がクリックされたときに confirm 関数が呼び出される。
+      confirm 関数は組み込みのJavaScriptエンジンを使用して自動的に処理を行う。-->
+      <i class="fa-solid fa-trash-can" style="color: #ffffff;" ></i>
+    </button>
+  </form>
+</header>
+  
+<main>
+  <form action="" method="get" class="search-form" >{# actionはフォームのデータが送信される先のURLの指定。フォームのデータがどのURLに送信されるかを定義する属性。何も指定しなければフォームのデータは現在のページのURLに送信される #}
+    <input type="text" name="search" value="{{ request.GET.search }}" id="search" placeholder="アーティストや曲で検索">
+    <i class="fas fa-search"></i>
+  </form>
+  
+  <div class="diary_container">
+    <p id="search_result"></p>
+  </div>
+
+  
+  
+</main>
+
+<script>
+  // folderのnameのjavascriptのオブジェクトの配列を作る
+  const data = [
+    {% for diary in diaries %}
+    { "title"    :"{{ diary.title }}",
+      "link"     :"{% url 'diary:diary' diary.id %}",
+      "thumbnail": "{{ diary.thumbnail }}",
+      "search"   :"{{ diary.search_string }}" },
+    {% endfor %}
+  ];
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'diary/base.html' %}
+{% load static %}
+
+
+{%block css %}
+<link rel="stylesheet" href="{% static 'diary/css/add_folder.css' %}">
+{% endblock %}
+
+{% block main %}
+
+<header>
+  <div><a href="{% url 'diary:mypage' %}"><i class="fa-solid fa-angle-left"></i></a></div>
+  <h1>Add folder</h1>
+</header>
+
+
+<main>
+
+  <div class="add_container">
+    <p>追加するフォルダー名は？</p>
+    <form method="post">
+      {% csrf_token %}
+      <input type="text" name="add_folder">
+      <button>保存</button>
+    </form>  
+    {% for message in messages %}
+    <div class="messages">※{{ message }}</div>
+    {% endfor %}
+  </div>
+
+  
+
+</main>
+{% endblock %}

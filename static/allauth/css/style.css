@@ -1,0 +1,74 @@
+body{
+  margin:0;
+  position:relative;
+  height:100vh;
+  background: linear-gradient(-45deg,  #e73c7e, #020F2F, #198dd0);/*グラデーションを定義*/
+  color: white;
+}
+
+.body_area {
+  width: 90%;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);/* #左角が中心にあるのを全体が中央になるようにする */
+}
+
+@media(min-width: 600px){
+  .body_area {
+    width: 60%;
+  }
+}
+
+.body_area_inner{
+  padding:1.5rem;
+  border:solid 1px white;
+  border-radius: 1rem;
+  box-shadow: 0 0 1rem white;
+}
+
+h1 {
+  text-align:center;
+}
+
+a {
+  color: white;
+}
+
+
+input[type="text"],input[type="password"],input[type="email"]{
+  width: 100%;
+  height: 2rem;
+  font-size: 1rem;
+  
+  background: white;
+  border: 1px solid white;
+  box-sizing: border-box;
+}
+
+button{
+  display:block;
+  width:100%;
+  margin:0.5rem 0;
+  font-size: 1rem;
+  background: white;
+  border: 1px solid white;
+  border-radius: 0.2rem;
+  cursor:pointer;
+  transition:0.2s;
+  padding:0.5rem;
+  line-height: 1.5;
+  user-select: none;
+  text-align: center;
+}
+
+button a{
+  color: #333;
+  text-decoration: none;
+}
+
+
+button:hover,a:hover{
+  opacity: 0.6;
+  transition:0.2s;
+}

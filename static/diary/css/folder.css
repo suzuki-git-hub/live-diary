@@ -1,0 +1,110 @@
+.fa-angle-left{
+  margin: 0 1rem;
+  color: white;
+  text-shadow: 0 0 6px white;
+}
+
+/* .fa-trash-can{
+  
+  color: white;
+  text-shadow: 0 0 6px white;
+  cursor: pointer;
+} */
+
+
+
+h1{
+  margin: 0;
+  font-size: 1.5rem;
+  padding: 0.5rem 0;
+  color: white;
+  text-shadow: 0 0 12px white;
+}
+
+header{
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.delete_area{
+  padding: 0 1rem;
+  margin-left: auto;
+}
+
+button{
+  background: transparent; /* transparent」は「透明」 */
+  border: none;
+  border-radius: 50%;
+  text-shadow: 0 0 2px darkgray;
+  cursor: pointer; 
+}
+
+
+
+
+.search-form {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  flex: 1; /* 要素の伸縮性を指定 */
+}
+
+
+
+input[type="text"] { 
+  width: 100%;
+  height: 2rem;
+  box-sizing: border-box; /* コンテンツボックスに指定した幅が適用されるようにする */
+}
+
+.search-form i {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  /* translateY(-50%) の場合、要素は自身の高さの50%上に移動されます。つまり、要素の中央に配置される効果があります。top: 50%; と組み合わせることで、親要素内での垂直方向の中央揃えになる。 */
+  right: 10px;
+  color: #7c7b7b;
+}
+
+.diary_item{
+  color: black;
+  transition:0.2s;
+  text-decoration: none;
+  margin: 0.5rem;
+}
+
+img{
+  width: 155px;
+  height: 140px;
+  object-fit: cover;
+  display: block;
+}
+
+a:hover{
+  opacity: 0.7;
+  transition:0.2s;
+}
+
+#search_result{
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+@media(min-width: 600px){
+  img{
+    width: 180px;
+    height: 150px; 
+  }
+
+  .diary_item{
+    margin: 0.5rem 1.5rem;
+  }
+
+  #search_result{
+    justify-content: start;
+  }
+}

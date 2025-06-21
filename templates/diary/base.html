@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{% static 'diary/css/base.css' %}">
+  <script src="https://kit.fontawesome.com/c620ed3da8.js" crossorigin="anonymous"></script>{# fontawsomeのkit #}
+  <title>Document</title>
+  {% block css %}
+  {% endblock %}
+
+  {% block js %}
+  {% endblock %}
+</head>
+
+<body>
+  <div>{% block main %}{% endblock %}</div>
+</body>
+
+</html>

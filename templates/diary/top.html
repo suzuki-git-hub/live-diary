@@ -1,0 +1,39 @@
+{% extends 'diary/base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'diary/css/top.css' %}">
+{% endblock %}
+
+
+
+
+{% block main %}
+
+
+{% if request.user.is_authenticated %}
+{# ↑リクエストを送信したユーザーがログイン済みかを判定することができる。ログイン済みであればTrue、そうでなければFalse #}<!-- ログイン済みの場合mypageへ行く処理 -->
+<script>
+  window.location.href = "{% url 'diary:mypage' %}";
+  // window.location.hrefはJavaScriptのプロパティであり、現在のウェブページのURLを表す。これを使用することでJavaScriptから動的にページのリダイレクトを行うことができる。新しいURLを代入することで、ブラウザはそのURLに自動的に移動できる。
+</script>
+
+
+{% else %}<!--ログインしてない場合の画面↓ -->
+<div class="background-img">
+
+  <div class="letter-container">
+    <h1 class="title1">Live Diary</h1>
+    <h2 class="title2">- 感情を書き残そう -</h2>
+  </div>
+
+  <div class="top-button-container">
+    <form action="{% url 'account_login' %}" method="GET">
+      <button>はじめる</button>
+    </form>
+    {# <form action="{% url 'diary:register' %}" method="GET"><input type="submit" value="無料で始める"></form> #}
+  </div>
+
+  {% endif %}
+
+  {% endblock %}

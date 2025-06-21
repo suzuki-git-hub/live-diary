@@ -1,0 +1,133 @@
+{% extends 'diary/base.html' %}
+{% load static %}
+
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'diary/css/create.css' %}">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+{# ↑FlatpickrのデフォルトのCSSファイルを読み込むためのコード #}
+{% endblock %}
+
+
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+{# ↑FlatpickrライブラリのメインのJavaScriptファイルを読み込むためのCDN。このファイルには、Flatpickrの基本的な機能と動作が含まれる。 #}
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+{# Flatpickrを日本語化するための言語ファイルを読み込むために使用されます。このファイルを読み込むことで、Flatpickrが日本語のカレンダー表示やラベルを提供する #}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock %}
+
+
+{% block main %}
+
+<header>
+  <div><a href="{% url 'diary:mypage' %}" onclick="return confirm('編集内容は保存されません。本当に移動しますか？（編集内容を保存をする場合は完成ボタンを押して下さい。）');"><i class="fa-solid fa-angle-left" ></i></a></div>
+  <h1>Diary</h1>
+</header>
+
+<main>
+  <form action="" method="POST">
+  {% csrf_token %}
+
+    <label class="form_item">
+      &emsp;Title
+      <input type="text" name="title" maxlength="50" class="not_decoration" required value={{diary.title}}>
+    </label>
+
+    <label class="form_item">
+      <i class="fa-solid fa-calendar-days" style="color: black;"></i>
+      <input id="date" type="text" name="dt" placeholder="日付" class="not_decoration" readonly value={{diary.dt}}>
+    {# readonly属性が指定されると、フィールドが読み取り専用（編集不可）となる #}
+    </label>
+
+    <label class="form_item">
+      <i class="fa-solid fa-location-dot" style="color: black;">&thinsp;</i>
+      <input type="text" name="place" placeholder="場所" maxlength="20" class="not_decoration" value={{diary.place}}>
+    </label>
+
+    <input type="checkbox" id="folder_form_chk">
+    <label for="folder_form_chk" class="form_item folder_form_label">
+      <span>フォルダ</span>
+    </label>
+
+ <!-- この日記に紐づいているfolderを全て取り出してforループで回す -->
+ <!-- 関連しているファイルのidと for folder in folders のvalue="{{ folder.id }}"が一致したらチェックをつける -->
+    <div class="folder_form_area">
+      {% for folder in folders %}
+      <div class="folder_name_area">  
+        <label>
+          <input type="checkbox" name="folder" value="{{ folder.id }}"
+          {% for diary_folder in diary.folder.all %}
+          {% if diary_folder.id == folder.id %}
+            checked
+          {% endif %}
+          {% endfor %}>
+          <span>{{ folder.name }}</span>
+        </label>
+      </div>  
+      {% endfor %}
+    </div>
+
+    <div>
+      {# クラス名 .artist_area は使わない #}
+      <input type="button" id="add_artist" class="form_item" value="Artist追加">
+      <div class="artist_form_area">
+      <!-- jsを使って追加されてく部分 -->
+       <!-- modelメソッドを使って関連するアーティストを取得↓ -->
+        {% for artist in diary.get_artists %}
+        <div class="artist_area">
+          <input type="text" name="name" class="artist" value="{{artist.name}}">
+
+          <!-- ここで編集対象のSetlistのidを含める必要がある。 -->
+          <input type="hidden" name="edit_artist_id" value="{{ artist.id }}"> 
+          {% with artist_id=forloop.counter0 %}
+
+          <!-- forloop.counterはDTLのforループ内だけで使用できる特別な変数。for ループが何回目かを示す。
+          forloop.counter0の場合0からカウントが始まる
+          今回はsrtistforループとsetlistforループ、二つのforループに同じカウントを渡したいのでwith変数を使用する -->
+          <button class="add_song_btn" type="button" value="{{ artist_id }}">曲追加</button>
+          
+          <!-- modelメソッドを使って関連するsetlistを取得↓ --> 
+          {% for setlist in artist.get_setlists %}
+          <div>
+            <input type="text" name="song" class="song_item" value="{{ setlist.song }}">
+            <input type="hidden" name="artist_id" value="{{ artist_id }}">
+            <!-- ここで編集対象のsetlistのidを含める必要がある。 -->
+            <input type="hidden" name="edit_setlist_id" value="{{ setlist.id }}">
+          </div>
+          {% endfor %}
+          {% endwith %}
+        </div>
+        {% endfor %}
+      <!-------------------------------->
+      </div>
+    </div>
+  
+    {{ form.content }}
+
+    <input type="submit" value="完 成">
+  </form>
+
+  <div>
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+
+</main>
+
+
+<script src="{% static 'diary/js/dt.js' %}"></script>
+<script src="{% static 'diary/js/create.js' %}"></script>
+<script>
+  
+  // return confirm('メッセージ'); は、JavaScriptにおいて、ユーザーに確認を求めるための標準的な関数。この関数を呼び出すことで、ブラウザは指定されたメッセージを表示する確認ダイアログを表示し、ユーザーが「OK」ボタンをクリックした場合に true、キャンセルをクリックした場合に false を返す。
+</script>
+{% endblock %}

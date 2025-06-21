@@ -1,0 +1,97 @@
+header {
+  margin: 0;
+  text-align: center;
+  color: white;
+}
+
+h1{
+  margin: 0;
+  font-size: 2rem;
+  padding: 0.5rem;
+  font-family: 'Times New Roman', 'sans-serif';
+  text-shadow: 0 0 1rem magenta;
+}
+
+header a{
+  display: inline-block;
+  color: white;
+  text-shadow: 0 0 6px white;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0 1rem;
+}
+
+header a:hover{
+  border-bottom: solid 1px white;
+}
+
+.mypage-button3{
+  text-shadow: 0 0 2px darkgrey;
+}
+
+.search-form {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  flex: 1; /* 要素の伸縮性を指定 */
+}
+
+
+input[type="text"] { 
+  width: 100%;
+  height: 2rem;
+  box-sizing: border-box; /* コンテンツボックスに指定した幅が適用されるようにする */
+}
+
+.search-form i {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  /* translateY(-50%) の場合、要素は自身の高さの50%上に移動されます。つまり、要素の中央に配置される効果があります。top: 50%; と組み合わせることで、親要素内での垂直方向の中央揃えになる。 */
+  right: 10px;
+  color: #7c7b7b;
+}
+
+#search_result {
+  display: flex;
+  flex-direction: column;
+}
+ 
+.folder-name a{
+  display: block;
+  margin-bottom: 10px; /* 各要素の下に余白を追加 */
+  color: black;
+  transition:0.2s;
+}
+
+.folder-name a:hover{
+  opacity: 0.6;
+  transition:0.2s;
+}
+
+@media(min-width: 600px){
+  header{
+    width: 200px;
+    height: 100vh;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  .flex-container{
+    display: flex;
+  }
+
+  main{
+    flex: 1;
+  }
+
+  header a{
+    margin: 2rem;
+  }
+
+  .mypage-button3{
+
+  }
+
+}
